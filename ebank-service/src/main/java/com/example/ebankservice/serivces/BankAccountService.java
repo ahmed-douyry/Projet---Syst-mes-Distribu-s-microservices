@@ -2,6 +2,7 @@ package com.example.ebankservice.serivces;
 
 import com.example.ebankservice.entities.BankAccount;
 import com.example.ebankservice.feign.CustomerRestClient;
+import com.example.ebankservice.models.Customer;
 import com.example.ebankservice.repositories.BankAccountRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class BankAccountService {
         this.customerRestClient = customerRestClient;
     }
     public List<BankAccount> bankAccountList(){
-        return bankAccountRepository.findAll();
+        return  bankAccountRepository.findAll();
     }
     public BankAccount findBankAccountById(String id){
         BankAccount bankAccount = bankAccountRepository.findById(id).
@@ -27,9 +28,15 @@ public class BankAccountService {
         bankAccount.setCustomer(customerRestClient.getCustomerById(bankAccount.getCustomerID()));
         return  bankAccount;
     }
+
     public BankAccount saveBankAccount (BankAccount bankAccount){
-        bankAccount.setId(UUID.randomUUID().toString());
-        bankAccount.setCreatedAt(new Date());
-        return  bankAccountRepository.save(bankAccount);
+        try {
+            Customer customer = customerRestClient.getCustomerById(bankAccount.getCustomerID());
+            bankAccount.setId(UUID.randomUUID().toString());
+            bankAccount.setCreatedAt(new Date());
+            return  bankAccountRepository.save(bankAccount);
+        } catch (Exception e) {
+            throw new RuntimeException( e.getMessage());
+        }
     }
 }
