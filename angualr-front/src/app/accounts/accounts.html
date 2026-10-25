@@ -1,0 +1,31 @@
+<div class="p-3">
+  @if (accounts$ | async; as accountsList){
+    @if (accountsList.errMessage) {
+      <div class="alert alert-danger" role="alert">{{ accountsList.errMessage }}</div>
+    }
+    <table class="table">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Balance</th>
+        <th>created at </th>
+        <th>type</th>
+        <th>customer id </th>
+
+      </tr>
+      </thead>
+      <tbody>
+        @for (account of accountsList.accounts; track account.id){
+          <tr>
+            <td>{{ account.id }}</td>
+            <td>{{ account.balance }}</td>
+            <td>{{ account.createdAt }}</td>
+            <td>{{ account.type }}</td>
+            <td>{{ account.customerID}}</td>
+          </tr>
+        }
+      </tbody>
+
+    </table>
+  }
+</div>
