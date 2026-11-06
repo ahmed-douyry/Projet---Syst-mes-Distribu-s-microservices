@@ -1,7 +1,7 @@
 <div class="p-3">
-  @if (accounts$ | async; as accountsList){
-    @if (accountsList.errMessage) {
-      <div class="alert alert-danger" role="alert">{{ accountsList.errMessage }}</div>
+  @if (accounts$ | async; as state){
+    @if (state.errMessage) {
+      <div class="alert alert-danger" role="alert">{{ state.errMessage }}</div>
     }
     <table class="table">
       <thead>
@@ -15,7 +15,7 @@
       </tr>
       </thead>
       <tbody>
-        @for (account of accountsList.accounts; track account.id){
+        @for (account of state.accounts; track account.id){
           <tr>
             <td>{{ account.id }}</td>
             <td>{{ account.balance }}</td>

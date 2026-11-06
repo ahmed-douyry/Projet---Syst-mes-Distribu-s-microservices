@@ -14,3 +14,18 @@
 #                http://localhost:8081
 #              predicates:
 #                - Path=/bankAccounts/**
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowedOrigins:
+                  - "*"
+                allowedMethods:
+                  - "*"
+
+                allowedHeaders:
+                  - "*"
