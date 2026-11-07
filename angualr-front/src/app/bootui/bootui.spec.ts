@@ -1,3 +1,4 @@
+import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Bootui } from './bootui';
@@ -8,6 +9,7 @@ describe('Bootui', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [provideHttpClient()],
       imports: [Bootui],
     }).compileComponents();
 

@@ -1,0 +1,30 @@
+.workspace-header {
+  min-height: 80px;
+  padding: 20px 40px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.workspace-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.workspace-footer {
+  margin: 0 40px;
+  padding: 24px 0;
+  border-top: 1px solid var(--border);
+}
+@media (max-width: 767px) {
+  .workspace-header {
+    min-height: 60px;
+    padding: 16px 20px;
+  }
+  .workspace-label {
+    display: none;
+  }
+  .workspace-footer {
+    margin: 0 20px;
+  }
+}

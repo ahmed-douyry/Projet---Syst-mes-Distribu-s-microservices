@@ -1,0 +1,60 @@
+:host {
+  display: block;
+  padding: 32px;
+}
+.card-body {
+  padding: 16px;
+}
+.card {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.form-control {
+  min-height: 44px;
+  background: var(--input);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 10px;
+}
+.btn-primary {
+  min-height: 44px;
+  border-radius: 7px;
+  background: #246a51;
+  color: white;
+  padding: 10px;
+  border: 0;
+}
+.spinner-border {
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+@media (max-width: 767px) {
+  :host {
+    padding: 16px;
+  }
+  .card-body:first-child {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .form-control,
+  .btn {
+    width: 100% !important;
+    margin: 0;
+  }
+}

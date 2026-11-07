@@ -1,3 +1,22 @@
-
-
-<router-outlet />
+<a class="skip-link" href="#main-content">Aller au contenu principal</a>
+<div class="app-layout min-h-screen lg:flex">
+  <app-navbar />
+  <div class="workspace min-w-0 flex-1">
+    <header class="workspace-header flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3 text-sm">
+        <span class="muted">Espace bancaire</span
+        ><i class="bi bi-chevron-right text-xs muted" aria-hidden="true"></i
+        ><span class="font-semibold">{{ sectionTitle() }}</span>
+      </div>
+      <span class="workspace-label"
+        ><span class="status-dot" aria-hidden="true"></span> Gestion bancaire</span
+      >
+    </header>
+    <main id="main-content" tabindex="-1"><router-outlet /></main>
+    <footer
+      class="workspace-footer flex flex-wrap items-center justify-between gap-2 text-xs muted"
+    >
+      <span>eBank · Espace de gestion</span><span>Une vision claire de vos comptes.</span>
+    </footer>
+  </div>
+</div>

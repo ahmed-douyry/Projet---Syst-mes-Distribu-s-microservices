@@ -1,16 +1,19 @@
-export interface  Account {
-  id?:String;
-  balance? :number;
-  createdAt?:Date;
-  type?:String;
-  customerID?:number;
+export interface Account {
+  id?: string;
+  balance?: number;
+  createdAt?: string | Date;
+  type?: string;
+  customerID?: number;
 }
-export  enum RequestStatus{
-  SUCCESS=0,ERROR = 1
 
+export enum RequestStatus {
+  SUCCESS = 0,
+  ERROR = 1,
+  LOADING = 2,
 }
+
 export interface AccountList {
-  accounts?:Account[]
-  status?:RequestStatus
-  errMessage?:String
+  accounts: Account[];
+  status: RequestStatus;
+  errMessage?: string;
 }

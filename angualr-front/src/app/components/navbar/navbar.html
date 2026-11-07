@@ -1,111 +1,91 @@
-
-<nav class="navbar navbar-expand-lg custom-navbar sticky-top">
-  <div class="container">
-
-    <!-- Logo -->
-    <a class="navbar-brand d-flex align-items-center gap-2"
-       routerLink="/">
-      <span class="brand-icon">
-        <i class="bi bi-layers-fill"></i>
-      </span>
-      <span>Nova<span class="brand-accent">Web</span></span>
-    </a>
-
-    <!-- Bouton mobile -->
+<div class="mobile-bar flex items-center justify-between">
+  <a routerLink="/accounts" class="brand" aria-label="eBank — accueil"
+    ><span class="brand-symbol"><i class="bi bi-bank2" aria-hidden="true"></i></span>eBank<span
+      class="brand-period"
+      >.</span
+    ></a
+  >
+  <button
+    #menuButton
+    class="mobile-menu-button"
+    type="button"
+    (click)="toggleMenu()"
+    [attr.aria-expanded]="menuOpen()"
+    aria-controls="primary-navigation"
+    [attr.aria-label]="menuOpen() ? 'Fermer le menu' : 'Ouvrir le menu'"
+  >
+    <i class="bi" [class.bi-list]="!menuOpen()" [class.bi-x-lg]="menuOpen()" aria-hidden="true"></i>
+  </button>
+</div>
+<aside class="sidebar" [class.menu-open]="menuOpen()" (keydown.escape)="closeMenu()">
+  <a routerLink="/accounts" class="brand desktop-brand" aria-label="eBank — accueil"
+    ><span class="brand-symbol"><i class="bi bi-bank2" aria-hidden="true"></i></span>eBank<span
+      class="brand-period"
+      >.</span
+    ></a
+  >
+  <div class="workspace-switch">
+    <span class="workspace-icon"><i class="bi bi-buildings" aria-hidden="true"></i></span>
+    <div><strong>Espace de gestion</strong><span>Banque & comptes</span></div>
+  </div>
+  <nav id="primary-navigation" aria-label="Navigation principale">
+    <p class="nav-label">VOTRE ESPACE</p>
+    <a
+      class="sidebar-link"
+      routerLink="/accounts"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      (click)="menuOpen.set(false)"
+      ><i class="bi bi-grid-1x2" aria-hidden="true"></i><span>Vue d’ensemble</span
+      ><i class="bi bi-arrow-up-right nav-arrow" aria-hidden="true"></i
+    ></a>
+    <a
+      class="sidebar-link"
+      routerLink="/accounts"
+      fragment="accounts-table"
+      (click)="menuOpen.set(false)"
+      ><i class="bi bi-wallet2" aria-hidden="true"></i><span>Tous les comptes</span></a
+    >
+    <a
+      class="sidebar-link"
+      routerLink="/accounts"
+      fragment="distribution"
+      (click)="menuOpen.set(false)"
+      ><i class="bi bi-pie-chart" aria-hidden="true"></i><span>Répartition</span></a
+    >
+    <a
+      class="sidebar-link"
+      routerLink="/bot"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      (click)="menuOpen.set(false)"
+      ><i class="bi bi-chat-dots" aria-hidden="true"></i><span>Assistant bancaire</span></a
+    >
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="sidebar-note">
+      <i class="bi bi-bank" aria-hidden="true"></i><strong>L’essentiel, en un regard.</strong>
+      <p>Retrouvez vos soldes et vos comptes dans un seul espace.</p>
+    </div>
     <button
-      class="navbar-toggler border-0 shadow-none"
+      class="theme-button"
       type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarContent"
-      aria-controls="navbarContent"
-      aria-expanded="false"
-      aria-label="Ouvrir le menu">
-      <i class="bi bi-list fs-2"></i>
+      (click)="theme.toggle()"
+      [attr.aria-pressed]="theme.dark()"
+    >
+      <i
+        class="bi"
+        [class.bi-moon-stars]="!theme.dark()"
+        [class.bi-sun]="theme.dark()"
+        aria-hidden="true"
+      ></i
+      ><span>Mode sombre</span
+      ><span class="theme-switch" [class.enabled]="theme.dark()"><span></span></span>
     </button>
-
-    <!-- Navigation -->
-    <div class="collapse navbar-collapse" id="navbarContent">
-
-      <ul class="navbar-nav mx-auto align-items-lg-center gap-lg-2">
-
-        <li class="nav-item">
-          <a class="nav-link"
-             routerLink="/"
-             routerLinkActive="active"
-             [routerLinkActiveOptions]="{ exact: true }">
-            Accueil
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link"
-             routerLink="/accounts"
-             routerLinkActive="active">
-            accounts
-          </a>
-        </li>
-
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle"
-             href="#"
-             role="button"
-             data-bs-toggle="dropdown"
-             aria-expanded="false">
-            Services
-          </a>
-
-          <ul class="dropdown-menu custom-dropdown">
-            <li>
-              <a class="dropdown-item" routerLink="/services/web">
-                <i class="bi bi-code-slash me-2"></i>
-                Développement Web
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" routerLink="/services/mobile">
-                <i class="bi bi-phone me-2"></i>
-                Applications mobiles
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" routerLink="/services/ai">
-                <i class="bi bi-cpu me-2"></i>
-                Intelligence artificielle
-              </a>
-            </li>
-          </ul>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link"
-             routerLink="/bot"
-             routerLinkActive="active">
-            bot
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link"
-             routerLink="/contact"
-             routerLinkActive="active">
-            Contact
-          </a>
-        </li>
-      </ul>
-
-      <!-- Actions -->
-      <div class="d-flex align-items-center gap-3 navbar-actions">
-        <a routerLink="/login" class="btn-login">
-          <i class="bi bi-box-arrow-in-right me-1"></i>
-          Connexion
-        </a>
-
-        <a routerLink="/register" class="btn-register">
-          Commencer
-          <i class="bi bi-arrow-right ms-2"></i>
-        </a>
-      </div>
-
+    <div class="sidebar-signature">
+      <span class="signature-icon">e.</span>
+      <div><strong>eBank</strong><span>Gestion des comptes</span></div>
+      <i class="bi bi-shield-check" aria-hidden="true"></i>
     </div>
   </div>
-</nav>
+</aside>

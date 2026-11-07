@@ -1,38 +1,244 @@
-<div class="p-3">
-  <div>
-    @if (loadingService.isloading()) {
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
+<div class="accounts-page">
+  <section
+    class="page-heading flex flex-col justify-between gap-5 sm:flex-row sm:items-end"
+    aria-labelledby="page-title"
+  >
+    <div>
+      <p class="eyebrow">VOTRE PORTEFEUILLE BANCAIRE</p>
+      <h1 id="page-title">Vue d’ensemble<span class="heading-dot">.</span></h1>
+      <p class="page-description">
+        Vos comptes, vos soldes. Une vision d’ensemble pour mieux suivre l’essentiel.
+      </p>
+    </div>
+    <button
+      class="button button-primary shrink-0"
+      type="button"
+      (click)="refresh()"
+      [disabled]="loading()"
+    >
+      <i class="bi bi-arrow-clockwise" [class.refreshing]="loading()" aria-hidden="true"></i
+      >Actualiser
+    </button>
+  </section>
+
+  <section
+    class="grid grid-cols-1 gap-4 min-[360px]:grid-cols-2 xl:grid-cols-4"
+    aria-label="Indicateurs du portefeuille"
+    [attr.aria-busy]="loading()"
+  >
+    @for (metric of metrics(); track metric.label) {
+      <app-metric-card
+        [label]="metric.label"
+        [value]="metric.value"
+        [description]="metric.description"
+        [icon]="metric.icon"
+        [featured]="metric.featured"
+      />
+    }
+  </section>
+
+  <app-portfolio-insights [groups]="distribution()" [loading]="loading()" [ready]="ready()" />
+
+  <section
+    id="accounts-table"
+    class="panel accounts-panel"
+    aria-labelledby="accounts-title"
+    [attr.aria-busy]="loading()"
+  >
+    <div class="table-heading flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+      <div class="flex items-center gap-3">
+        <h2 id="accounts-title" class="section-title">Tous les comptes</h2>
+        <span class="count-badge">{{ ready() ? accounts().length : '—' }}</span>
       </div>
-    }
-  </div>
-  @if (accounts$ | async; as state){
-    @if (state.errMessage) {
-      <div class="alert alert-danger" role="alert">{{ state.errMessage }}</div>
-    }
-    <table class="table">
-      <thead>
-      <tr>
-        <th>ID</th>
-        <th>Balance</th>
-        <th>created at </th>
-        <th>type</th>
-        <th>customer id </th>
-
-      </tr>
-      </thead>
-      <tbody>
-        @for (account of state.accounts; track account.id){
-          <tr>
-            <td>{{ account.id }}</td>
-            <td>{{ account.balance }}</td>
-            <td>{{ account.createdAt }}</td>
-            <td>{{ account.type }}</td>
-            <td>{{ account.customerID}}</td>
-          </tr>
+      <button
+        class="button button-secondary"
+        type="button"
+        (click)="exportCsv()"
+        [disabled]="!ready() || !filteredAccounts().length"
+      >
+        <i class="bi bi-download" aria-hidden="true"></i>Exporter CSV
+      </button>
+    </div>
+    <div class="filters flex flex-col gap-3 sm:flex-row">
+      <div class="search-field flex flex-1 items-center gap-3">
+        <i class="bi bi-search muted" aria-hidden="true"></i
+        ><label class="sr-only" for="account-search"
+          >Rechercher par identifiant de compte, client ou type</label
+        ><input
+          id="account-search"
+          type="search"
+          placeholder="Rechercher un compte, un client…"
+          [value]="query()"
+          #searchInput
+          (input)="updateQuery(searchInput.value)"
+          autocomplete="off"
+        />
+      </div>
+      <div class="type-field">
+        <label class="sr-only" for="account-type">Filtrer par type de compte</label
+        ><i class="bi bi-sliders2 muted" aria-hidden="true"></i
+        ><select
+          id="account-type"
+          [value]="selectedType()"
+          #typeSelect
+          (change)="updateType(typeSelect.value)"
+        >
+          <option value="">Tous les types</option>
+          @for (type of types(); track type) {
+            <option [value]="type">{{ type }}</option>
+          }
+        </select>
+      </div>
+    </div>
+    <p class="sr-only" aria-live="polite">{{ exportMessage() }}</p>
+    @switch (state().status) {
+      @case (requestStatus.LOADING) {
+        <div class="table-state" role="status">
+          <span class="loading-dot"></span>
+          <h3>Chargement des comptes</h3>
+          <p>Récupération de votre portefeuille bancaire…</p>
+        </div>
+      }
+      @case (requestStatus.ERROR) {
+        <div class="table-state error-state" role="alert">
+          <i class="bi bi-cloud-slash state-icon" aria-hidden="true"></i>
+          <h3>Les comptes sont indisponibles</h3>
+          <p>{{ state().errMessage }}</p>
+          <button class="button button-secondary" (click)="refresh()" type="button">
+            <i class="bi bi-arrow-clockwise" aria-hidden="true"></i>Réessayer
+          </button>
+        </div>
+      }
+      @case (requestStatus.SUCCESS) {
+        @if (filteredAccounts().length) {
+          <p class="m-0 px-[18px] pb-3 text-[11px] muted md:hidden">
+            Faites défiler le tableau pour voir tous les détails.
+          </p>
+          <div
+            class="table-scroll overflow-x-auto"
+            role="region"
+            aria-label="Liste des comptes, défilement horizontal disponible"
+            tabindex="0"
+          >
+            <table>
+              <caption class="sr-only">
+                Comptes bancaires : identifiant, solde, date de création, type et client associé
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col" [attr.aria-sort]="sortDirection('id')">
+                    <button (click)="sort('id')" type="button">
+                      Compte <i class="bi bi-arrow-down-up" aria-hidden="true"></i>
+                    </button>
+                  </th>
+                  <th scope="col" [attr.aria-sort]="sortDirection('balance')" class="balance-cell">
+                    <button (click)="sort('balance')" type="button">
+                      Solde <i class="bi bi-arrow-down-up" aria-hidden="true"></i>
+                    </button>
+                  </th>
+                  <th scope="col" [attr.aria-sort]="sortDirection('createdAt')">
+                    <button (click)="sort('createdAt')" type="button">
+                      Date de création <i class="bi bi-arrow-down-up" aria-hidden="true"></i>
+                    </button>
+                  </th>
+                  <th scope="col">Type de compte</th>
+                  <th scope="col">Client</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (account of visibleAccounts(); track account.id ?? $index) {
+                  <tr>
+                    <td>
+                      <div class="flex items-center gap-[11px]">
+                        <span class="account-icon"
+                          ><i class="bi bi-wallet2" aria-hidden="true"></i></span
+                        ><span class="account-id" [title]="account.id || ''">{{
+                          account.id || 'Non renseigné'
+                        }}</span>
+                      </div>
+                    </td>
+                    <td
+                      class="balance-cell font-semibold"
+                      [class.negative-balance]="(account.balance ?? 0) < 0"
+                    >
+                      {{
+                        account.balance == null ? '—' : (account.balance | number: '1.2-2' : 'fr')
+                      }}
+                    </td>
+                    <td class="muted">
+                      {{
+                        dateValue(account.createdAt) === null
+                          ? '—'
+                          : (account.createdAt | date: 'dd MMM yyyy' : undefined : 'fr')
+                      }}
+                    </td>
+                    <td>
+                      <span class="type-badge">{{ account.type || 'Non renseigné' }}</span>
+                    </td>
+                    <td>
+                      <span class="inline-flex items-center gap-1.5 muted"
+                        ><i class="bi bi-person" aria-hidden="true"></i
+                        >{{ account.customerID == null ? '—' : '#' + account.customerID }}</span
+                      >
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <div class="table-state">
+            <i class="bi bi-search state-icon" aria-hidden="true"></i>
+            <h3>{{ accounts().length ? 'Aucun compte trouvé' : 'Aucun compte disponible' }}</h3>
+            <p>
+              {{
+                accounts().length
+                  ? 'Essayez un autre identifiant ou modifiez vos filtres.'
+                  : 'Les comptes apparaîtront ici dès leur disponibilité.'
+              }}
+            </p>
+            @if (query() || selectedType()) {
+              <button class="button button-secondary" (click)="resetFilters()" type="button">
+                Réinitialiser les filtres
+              </button>
+            }
+          </div>
         }
-      </tbody>
-
-    </table>
-  }
+      }
+    }
+    <div class="table-footer flex flex-wrap items-center justify-between gap-3">
+      <p class="muted" aria-live="polite">
+        @if (ready() && filteredAccounts().length) {
+          <strong>{{ pageStart() + 1 }}–{{ pageEnd() }}</strong> sur
+          {{ filteredAccounts().length }} comptes
+        } @else {
+          {{ ready() ? '0 compte' : 'En attente des données' }}
+        }
+      </p>
+      <nav class="pagination flex items-center gap-2" aria-label="Pagination des comptes">
+        <button
+          class="page-button"
+          type="button"
+          aria-label="Page précédente"
+          (click)="page.set(currentPage() - 1)"
+          [disabled]="!ready() || currentPage() <= 1"
+        >
+          <i class="bi bi-chevron-left" aria-hidden="true"></i></button
+        ><span>Page {{ currentPage() }} sur {{ pageCount() }}</span
+        ><button
+          class="page-button"
+          type="button"
+          aria-label="Page suivante"
+          (click)="page.set(currentPage() + 1)"
+          [disabled]="!ready() || currentPage() >= pageCount()"
+        >
+          <i class="bi bi-chevron-right" aria-hidden="true"></i>
+        </button>
+      </nav>
+    </div>
+  </section>
+  <p class="data-note">
+    <i class="bi bi-info-circle" aria-hidden="true"></i>Les soldes sont affichés dans l’unité
+    fournie par le service bancaire.
+  </p>
 </div>

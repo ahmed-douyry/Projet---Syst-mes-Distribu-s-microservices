@@ -1,0 +1,135 @@
+:host {
+  display: block;
+}
+.portfolio-insights {
+  margin: 24px 0;
+}
+.distribution-panel {
+  padding: 25px;
+}
+.subtle-icon {
+  background: var(--subtle);
+  border-radius: 7px;
+  padding: 7px 10px;
+  color: var(--muted);
+}
+.distribution-bars {
+  display: flex;
+  height: 24px;
+  border-radius: 5px;
+  overflow: hidden;
+  gap: 4px;
+  margin: 26px 0 22px;
+}
+.chart-segment {
+  min-width: 3px;
+  transition: flex-grow 0.3s;
+}
+.chart-color-0 {
+  background: #248366;
+}
+.chart-color-1 {
+  background: #7fc3a6;
+}
+.chart-color-2 {
+  background: #b7d9cf;
+}
+.chart-color-3 {
+  background: #d4b879;
+}
+.distribution-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 30px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.distribution-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 11px;
+}
+.legend-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.chart-placeholder {
+  min-height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 12px;
+  text-align: center;
+  line-height: 1.8;
+  margin: 12px 0 0;
+}
+.portfolio-note {
+  background: var(--note);
+  border: 1px solid var(--featured-border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.note-heading {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--accent);
+  font-size: 9px;
+  font-weight: 650;
+  letter-spacing: 1px;
+}
+.note-icon {
+  font-size: 17px;
+}
+.portfolio-note h2 {
+  font-size: 25px;
+  font-weight: 600;
+  letter-spacing: -0.8px;
+  line-height: 1.2;
+  margin: 17px 0 12px;
+}
+.portfolio-note p {
+  color: var(--muted);
+  font-size: 11px;
+  max-width: 290px;
+  line-height: 1.8;
+  margin: 0;
+}
+.note-link {
+  display: inline-flex;
+  gap: 20px;
+  align-items: center;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 650;
+  margin-top: 18px;
+  text-decoration: none;
+}
+.note-link:hover {
+  text-decoration: underline;
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .distribution-list {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 767px) {
+  .distribution-panel,
+  .portfolio-note {
+    padding: 22px;
+  }
+}
+@media (max-width: 479px) {
+  .distribution-list {
+    grid-template-columns: 1fr;
+  }
+}

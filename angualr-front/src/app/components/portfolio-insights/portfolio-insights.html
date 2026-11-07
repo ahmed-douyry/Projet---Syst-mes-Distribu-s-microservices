@@ -1,0 +1,67 @@
+<section
+  id="distribution"
+  class="portfolio-insights grid grid-cols-1 gap-5 lg:grid-cols-5"
+  aria-label="Analyse des comptes"
+>
+  <article class="panel distribution-panel lg:col-span-3">
+    <div class="flex items-start justify-between gap-4">
+      <div>
+        <p class="eyebrow">STRUCTURE DU PORTEFEUILLE</p>
+        <h2 class="section-title">Répartition des comptes</h2>
+      </div>
+      <span class="subtle-icon"><i class="bi bi-pie-chart" aria-hidden="true"></i></span>
+    </div>
+    @if (loading()) {
+      <div class="chart-placeholder" role="status">
+        <span class="loading-dot"></span>Chargement de la répartition…
+      </div>
+    } @else if (ready() && groups().length) {
+      <div
+        class="distribution-bars"
+        role="img"
+        aria-label="Répartition des comptes par type. Détail ci-dessous."
+      >
+        @for (group of groups(); track group.type; let index = $index) {
+          <span
+            [style.flex-grow]="group.count"
+            [class]="'chart-segment chart-color-' + (index % 4)"
+          ></span>
+        }
+      </div>
+      <ul class="distribution-list">
+        @for (group of groups(); track group.type; let index = $index) {
+          <li>
+            <span class="flex min-w-0 items-center gap-2"
+              ><span [class]="'legend-dot chart-color-' + (index % 4)" aria-hidden="true"></span
+              ><span class="truncate" [title]="group.type">{{ group.type }}</span></span
+            ><span class="whitespace-nowrap"
+              ><strong>{{ group.count }}</strong
+              ><span class="muted ml-2"
+                >{{ group.percentage | number: '1.0-1' : 'fr' }} %</span
+              ></span
+            >
+          </li>
+        }
+      </ul>
+    } @else {
+      <p class="chart-placeholder muted">
+        {{
+          ready()
+            ? 'La répartition apparaîtra dès qu’un compte sera disponible.'
+            : 'Répartition indisponible pour le moment.'
+        }}
+      </p>
+    }
+  </article>
+  <article class="portfolio-note lg:col-span-2">
+    <div class="note-heading">
+      <span class="note-icon"><i class="bi bi-bank2" aria-hidden="true"></i></span
+      ><span>LE POINT SUR VOS COMPTES</span>
+    </div>
+    <h2>Chaque compte.<br />Une vue plus claire.</h2>
+    <p>Consultez les soldes, retrouvez un compte et explorez votre portefeuille par type.</p>
+    <a href="#accounts-table" class="note-link"
+      >Explorer les comptes<i class="bi bi-arrow-down-right" aria-hidden="true"></i
+    ></a>
+  </article>
+</section>

@@ -1,4 +1,201 @@
-/* You can add global styles to this file, and also import other style files */
-@import "bootstrap/dist/css/bootstrap.min.css";
+@import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
 
-@import "bootstrap-icons/font/bootstrap-icons.css";
+:root {
+  --canvas: #f6f8f7;
+  --surface: #fff;
+  --text: #203833;
+  --muted: #62736e;
+  --accent: #22674f;
+  --border: #e0e7e3;
+  --subtle: #f7f9f8;
+  --input: #fff;
+  --featured: #eaf3ed;
+  --featured-border: #d7e6dc;
+  --featured-icon: #d6e8dc;
+  --note: #edf2e9;
+  --badge: #edf5ef;
+  --hover: #f5f9f6;
+  --danger: #b33c3c;
+  font-family: 'Avenir Next', 'Segoe UI', sans-serif;
+  color-scheme: light;
+}
+:root.dark {
+  --canvas: #101c1c;
+  --surface: #192827;
+  --text: #e4eeea;
+  --muted: #adbfba;
+  --accent: #a0dfbd;
+  --border: #314440;
+  --subtle: #1e302d;
+  --input: #192827;
+  --featured: #213e32;
+  --featured-border: #365544;
+  --featured-icon: #2c4e3c;
+  --note: #22382c;
+  --badge: #2b4437;
+  --hover: #233a33;
+  --danger: #ffaeae;
+  color-scheme: dark;
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 24px;
+}
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--text);
+  font-family: 'Avenir Next', 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+button,
+input,
+select {
+  font: inherit;
+}
+button,
+a,
+input,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+a {
+  color: inherit;
+}
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+}
+.sidebar :focus-visible,
+.mobile-bar :focus-visible {
+  outline-color: #b7edcd;
+}
+::selection {
+  background: #b7edcd;
+  color: #102c2e;
+}
+.muted {
+  color: var(--muted);
+}
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.eyebrow {
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 650;
+  letter-spacing: 1.55px;
+  margin: 0 0 8px;
+}
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.35px;
+  line-height: 1.4;
+  margin: 0;
+}
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 40px;
+  padding: 10px 15px;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+  transition:
+    background 0.18s,
+    box-shadow 0.18s,
+    transform 0.18s;
+}
+.button:active:enabled {
+  transform: translateY(1px);
+}
+.button-primary {
+  background: #246a51;
+  border: 1px solid #246a51;
+  color: #fff;
+  box-shadow: 0 3px 5px #102c2e0d;
+}
+.button-primary:hover:enabled {
+  background: #18513d;
+}
+.button-secondary {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.button-secondary:hover:enabled {
+  background: var(--hover);
+}
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3a8568;
+}
+.skip-link {
+  position: fixed;
+  top: -80px;
+  left: 16px;
+  z-index: 100;
+  background: var(--surface);
+  padding: 12px 20px;
+  border: 2px solid var(--accent);
+  border-radius: 5px;
+}
+.skip-link:focus {
+  top: 12px;
+}
+.loading-dot {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+.refreshing {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+@media (pointer: coarse) {
+  .button,
+  .page-button,
+  th button {
+    min-height: 44px;
+  }
+  .page-button {
+    min-width: 44px;
+  }
+}
