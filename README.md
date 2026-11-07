@@ -87,12 +87,4 @@ Dernière validation : **compilation de production sans avertissement et 17 test
 
 Le navigateur a également vérifié les tableaux avec bordures et l’absence de débordement de page à 390 px.
 
-## Correction de l’affichage des réponses
 
-Le parseur précédent supprimait les espaces au début des fragments et concaténait les lignes SSE sans restaurer leurs sauts de ligne. Les mots se collaient et les tableaux Markdown restaient du texte brut.
-
-Le parseur `spring-sse.ts` conserve le contenu écrit par le endpoint Spring `Flux<String>`, assemble les lignes d’un même événement avec leurs retours à la ligne et attend la fin des événements incomplets. Les règles `.assistant-markdown` mettent en forme tableaux, listes, titres et blocs de code dans les deux thèmes. L’assainissement HTML de `ngx-markdown` reste actif.
-
-Ce parseur cible le format Spring utilisé ici, qui écrit `data:` directement devant le fragment ; il n’enlève donc pas les espaces du fragment. Référence : [sérialisation SSE de Spring](https://github.com/spring-projects/spring-framework/blob/v7.0.0/spring-webmvc/src/main/java/org/springframework/web/servlet/mvc/method/annotation/SseEmitter.java).
-
-Les choix de design et d’architecture sont détaillés dans [angualr-front/DESIGN.md](angualr-front/DESIGN.md).
