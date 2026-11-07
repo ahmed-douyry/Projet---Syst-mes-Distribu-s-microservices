@@ -1,59 +1,32 @@
-# AngualrFront
+# Frontend eBank
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.1.
+Interface Angular 21 et Tailwind CSS 4 pour consulter les comptes bancaires et interroger l’assistant IA.
 
-## Development server
+## Captures d’écran
 
-To start a local development server, run:
+La [galerie complète dans le README du projet](../README.md#aperçu-de-lapplication) présente les deux pages, leurs modes clair/sombre et leurs versions mobiles. Les captures utilisent des données de démonstration ; elles ne représentent pas des données bancaires réelles.
 
-```bash
-ng serve
+![Dashboard bancaire](../docs/screenshots/dashboard-desktop.png)
+
+![Assistant : tableau des clients avec mise en forme Markdown](../docs/screenshots/assistant-clients.png)
+
+## Démarrage
+
+```sh
+npm install
+npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Ouvrir `http://localhost:4200/accounts` ou `http://localhost:4200/bot`.
+La passerelle backend doit être accessible sur `http://localhost:9999`.
 
-## Code scaffolding
+## Validation
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```sh
+npm run build
+npm test -- --watch=false
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Compilation de production et 17 tests vérifiés. Le traitement SSE conserve les espaces, les retours à la ligne et la structure des tableaux Markdown. Les styles des réponses prennent en charge le mode sombre et les tableaux défilants sur mobile.
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Consulter [DESIGN.md](DESIGN.md) pour les détails d’architecture, de réactivité et d’accessibilité.

@@ -90,3 +90,16 @@ globalement. `ngx-markdown` est aligné sur la version 21 compatible avec Angula
 21 (la version 22 distante exige Angular 22). Les tests distants ont été corrigés
 pour fournir HttpClient et référencer le nom actuel `LoadingService`.
 Compilation sans avertissement et dix tests réussis après fusion.
+
+## Affichage Markdown de l’assistant
+
+Le parseur SSE spécifique au endpoint Spring préserve les espaces de fragments
+et les retours à la ligne à l’intérieur de chaque événement. Les événements
+incomplets sont différés. Des tests vérifient le DOM Markdown pendant la
+progression et à la fin de la réponse, ainsi que les erreurs et la désinfection
+HTML. Les styles `.assistant-markdown` sont globaux mais limités au contenu
+de l’assistant, car ce DOM est généré par ngx-markdown.
+
+Validation après correction : 17 tests réussis, compilation sans avertissement.
+La galerie versionnée se trouve dans `../docs/screenshots/`, avec les légendes
+et le contexte des données de démonstration dans le README racine.

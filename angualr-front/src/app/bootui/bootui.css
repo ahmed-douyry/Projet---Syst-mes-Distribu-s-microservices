@@ -1,60 +1,115 @@
 :host {
   display: block;
-  padding: 32px;
+  min-width: 0;
 }
-.card-body {
+.assistant-page {
+  padding: 35px 40px;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+.assistant-heading {
+  margin-bottom: 26px;
+}
+h1 {
+  font-size: clamp(27px, 3vw, 36px);
+  font-weight: 650;
+  letter-spacing: -1px;
+  margin: 8px 0 12px;
+}
+h1 span {
+  color: var(--accent);
+}
+.assistant-heading > p:last-child {
+  font-size: 13px;
+  line-height: 1.7;
+}
+.assistant-form {
   padding: 16px;
 }
-.card {
-  background: var(--surface);
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-}
-.form-control {
+input {
+  min-width: 0;
+  flex: 1;
   min-height: 44px;
   background: var(--input);
   color: var(--text);
   border: 1px solid var(--border);
   border-radius: 7px;
-  padding: 10px;
+  padding: 11px 14px;
+  font-size: 14px;
 }
-.btn-primary {
-  min-height: 44px;
-  border-radius: 7px;
-  background: #246a51;
-  color: white;
-  padding: 10px;
-  border: 0;
+input::placeholder {
+  color: var(--muted);
+  opacity: 1;
 }
-.spinner-border {
-  width: 24px;
-  height: 24px;
-  border: 3px solid var(--border);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
+.assistant-response {
+  margin-top: 24px;
   overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
+}
+.response-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+}
+h2 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+h2 i {
+  color: var(--accent);
+  margin-right: 10px;
+}
+.response-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.response-status .loading-dot {
+  width: 13px;
+  height: 13px;
+}
+.response-scroll {
+  overflow-x: auto;
+  padding: 24px;
+}
+.response-error,
+.response-placeholder {
+  padding: 24px;
+  font-size: 14px;
+  line-height: 1.8;
+  margin: 0;
+}
+.response-error {
+  color: var(--danger);
+}
+.assistant-empty {
+  padding: 64px 20px;
+  text-align: center;
+}
+.assistant-empty > i {
+  display: block;
+  color: var(--accent);
+  font-size: 34px;
+  margin-bottom: 18px;
+}
+.assistant-empty p {
+  font-size: 13px;
+  line-height: 1.8;
+  margin-top: 10px;
 }
 @media (max-width: 767px) {
-  :host {
-    padding: 16px;
+  .assistant-page {
+    padding: 26px 20px;
   }
-  .card-body:first-child {
-    display: flex;
+  input {
+    font-size: 16px;
+  }
+  .response-header {
+    padding: 18px;
     flex-wrap: wrap;
-    gap: 12px;
   }
-  .form-control,
-  .btn {
-    width: 100% !important;
-    margin: 0;
+  .response-scroll {
+    padding: 18px;
   }
 }

@@ -199,3 +199,112 @@ a {
     min-width: 44px;
   }
 }
+
+/* Markdown creates its own DOM; scope these global rules to assistant answers. */
+.assistant-markdown {
+  display: block;
+  font-size: 14px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.assistant-markdown > :first-child {
+  margin-top: 0;
+}
+.assistant-markdown > :last-child {
+  margin-bottom: 0;
+}
+.assistant-markdown p {
+  margin: 0 0 16px;
+}
+.assistant-markdown h1,
+.assistant-markdown h2,
+.assistant-markdown h3 {
+  margin: 24px 0 12px;
+  font-weight: 650;
+  line-height: 1.4;
+}
+.assistant-markdown h1 {
+  font-size: 23px;
+}
+.assistant-markdown h2 {
+  font-size: 20px;
+}
+.assistant-markdown h3 {
+  font-size: 17px;
+}
+.assistant-markdown ul,
+.assistant-markdown ol {
+  padding-left: 24px;
+  margin: 12px 0;
+}
+.assistant-markdown ul {
+  list-style: disc;
+}
+.assistant-markdown ol {
+  list-style: decimal;
+}
+.assistant-markdown li + li {
+  margin-top: 5px;
+}
+.assistant-markdown table {
+  overflow-wrap: normal;
+  width: 100%;
+  min-width: 540px;
+  border-collapse: collapse;
+  font-size: 13px;
+  line-height: 1.65;
+  margin: 18px 0;
+}
+.assistant-markdown th,
+.assistant-markdown td {
+  border: 1px solid var(--border);
+  padding: 12px 15px;
+  text-align: left;
+  vertical-align: top;
+}
+.assistant-markdown th {
+  background: var(--subtle);
+  font-weight: 650;
+  color: var(--text);
+  white-space: nowrap;
+}
+.assistant-markdown tbody tr:nth-child(even) {
+  background: var(--subtle);
+}
+.assistant-markdown tbody tr:hover {
+  background: var(--hover);
+}
+.assistant-markdown pre {
+  overflow-x: auto;
+  padding: 16px;
+  background: var(--subtle);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  margin: 16px 0;
+}
+.assistant-markdown code {
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.9em;
+  background: var(--subtle);
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+.assistant-markdown pre code {
+  padding: 0;
+  background: transparent;
+}
+.assistant-markdown blockquote {
+  border-left: 3px solid var(--accent);
+  margin: 16px 0;
+  padding-left: 16px;
+  color: var(--muted);
+}
+.assistant-markdown a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+.assistant-markdown hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 20px 0;
+}

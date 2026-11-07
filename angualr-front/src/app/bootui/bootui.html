@@ -1,28 +1,68 @@
-<div class="p-3">
-  <div class="card-body">
-    <input [(ngModel)]="query" type="text" class="form-control m-2" style="display: inline; width: 80%;" placeholder="Enter your prompt">
-    <button (click)="askAgentStream()" class="btn btn-primary" style="display: inline; width: 18%;">
-      <i class="bi bi-send me-2"></i>
-      Send
+<section class="assistant-page" aria-labelledby="assistant-title">
+  <div class="assistant-heading">
+    <p class="eyebrow">VOTRE ASSISTANT</p>
+    <h1 id="assistant-title">Assistant bancaire<span>.</span></h1>
+    <p class="muted">Posez votre question sur les clients et les comptes bancaires.</p>
+  </div>
+  <form class="assistant-form panel flex flex-col gap-3 sm:flex-row" (ngSubmit)="askAgentStream()">
+    <label class="sr-only" for="assistant-query">Votre question</label>
+    <input
+      id="assistant-query"
+      name="query"
+      type="text"
+      [ngModel]="query()"
+      (ngModelChange)="query.set($event)"
+      placeholder="Ex. : afficher la liste des clients"
+      autocomplete="off"
+      [disabled]="pending()"
+      required
+    />
+    <button type="submit" class="button button-primary" [disabled]="pending() || !query().trim()">
+      <i class="bi bi-send" aria-hidden="true"></i>{{ pending() ? 'Réponse en cours…' : 'Envoyer' }}
     </button>
-  </div>
-  <div>
-    @if (loadingService.isloading()) {
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    }
-  </div>
-  <div class="card-body">
-    @if (response$ | async; as resp) {
-      <div class="card m-2">
-        <div class="card-body">
-          @if (resp.type === "download" || resp.type === "response") {
-            <markdown [data]="resp.content"></markdown>
-          }
-
+  </form>
+  @if (response$ | async; as resp) {
+    <article
+      class="assistant-response panel"
+      [attr.aria-busy]="pending()"
+      aria-labelledby="response-title"
+    >
+      <header class="response-header flex items-center justify-between gap-3">
+        <h2 id="response-title">
+          <i class="bi bi-chat-square-text" aria-hidden="true"></i>Réponse de l’assistant
+        </h2>
+        @if (pending()) {
+          <span class="response-status" role="status"
+            ><span class="loading-dot" aria-hidden="true"></span>Génération en cours</span
+          >
+        }
+      </header>
+      @if (resp.type === 'error') {
+        <p class="response-error" role="alert">{{ resp.content }}</p>
+      } @else if (resp.content) {
+        <div
+          class="response-scroll"
+          role="region"
+          aria-label="Réponse et tableaux de l’assistant"
+          tabindex="0"
+        >
+          <markdown class="assistant-markdown" [data]="resp.content" />
         </div>
-      </div>
-
-    }
-</div>
+      } @else {
+        <p class="response-placeholder muted" role="status">
+          {{
+            pending()
+              ? 'L’assistant prépare votre réponse…'
+              : 'L’assistant n’a renvoyé aucun contenu. Vous pouvez reformuler votre question.'
+          }}
+        </p>
+      }
+    </article>
+  } @else {
+    <div class="assistant-empty">
+      <i class="bi bi-chat-dots" aria-hidden="true"></i>
+      <h2>Comment puis-je vous aider ?</h2>
+      <p class="muted">Recherchez un client ou demandez un récapitulatif des comptes.</p>
+    </div>
+  }
+</section>
