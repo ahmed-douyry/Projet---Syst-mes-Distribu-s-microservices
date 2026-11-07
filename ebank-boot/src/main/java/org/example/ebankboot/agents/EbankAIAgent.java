@@ -8,6 +8,7 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import reactor.core.publisher.Flux;
 
 @Service
 public class EbankAIAgent {
@@ -110,6 +111,18 @@ public class EbankAIAgent {
                         ChatMemory.CONVERSATION_ID,
                         conversationId))
                 .call()
+                .content();
+    }
+    public Flux<String> chatStream(Prompt prompt, String conversationId) {
+        Assert.notNull(prompt, "prompt cannot be null");
+        Assert.hasText(conversationId,
+                "conversationId cannot be null or empty");
+
+        return chatClient.prompt(prompt)
+                .advisors(a -> a.param(
+                        ChatMemory.CONVERSATION_ID,
+                        conversationId))
+                .stream()
                 .content();
     }
 }

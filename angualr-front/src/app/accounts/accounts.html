@@ -1,4 +1,11 @@
 <div class="p-3">
+  <div>
+    @if (loadingService.isloading()) {
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    }
+  </div>
   @if (accounts$ | async; as state){
     @if (state.errMessage) {
       <div class="alert alert-danger" role="alert">{{ state.errMessage }}</div>
